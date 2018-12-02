@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     user:null,
     loading: false,
-    error: null
+    error: null,
+    loadedDishes = []
   },
   getters: {
     user: state => state.user,
@@ -31,6 +32,9 @@ export default new Vuex.Store({
   },
   setDrawer(state){
     state.drawer = !state.drawer
+  },
+  setLoadedDished (state, payload) {
+    loadedDishes = payload
   }
   },
   actions: {
@@ -87,6 +91,26 @@ export default new Vuex.Store({
     setDrawer ({commit}){
       commit('setDrawer')
     },
+    loadDishes ({commit}) {
+      firebase.database().ref().once('value')
+      .then((data) => {
+        const dishes = []
+        const obj = data.val()
+        for (let key in obj) {
+          dishes.push({
+            id : key,
+            title : obj[key].title,
+            imageUrl : obj[key].imageUrl,
+            description : obj[key].description,
+            author : obj[key].author
+          })
+        }
+        commit ('set')
+      })
+      .catch( (err) => {
+        console.log(err)
+      })
+    }, 
     createDish ({commit}, payload){
       const dish = {
         title : payload.title,
@@ -97,7 +121,11 @@ export default new Vuex.Store({
       firebase.database().ref('dishes').push(dish).then(
         (data) => {
           console.log(data)
-          commit('createDIsh',dish)
+          const key = data.key
+          commit('createDIsh',
+          {
+            ...dish,
+            id : key})
         }
       ).catch((err) => {
         console.log(err)
