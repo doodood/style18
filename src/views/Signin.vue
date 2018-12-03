@@ -50,10 +50,10 @@
               </form>
             </v-container>
           </v-card-text>
-          <v-img
+          <!-- <v-img
           src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
           aspect-ratio="2.75"
-        ></v-img>
+        ></v-img> -->
         </v-card>
       </v-flex>
     </v-layout>
@@ -93,8 +93,6 @@ export default {
     ]),
     onSignin: function () {
       this.signUserIn(this.u).then(()=>{
-        alert('vous êtes co')
-        console.log(this.u)
         console.log(this.loading)
       })
     }

@@ -20,21 +20,21 @@ export default new Vuex.Store({
   mutations: {
     setUser (state, payload) {
       state.user = payload
-   },
+  },
   setLoading(state,payload){
-  	state.loading = payload
+	state.loading = payload
   },
   setError(state,payload){
-  	state.error = payload
+	state.error = payload
   },
   clearError(state){
-  	state.error = null
+  state.error = null
   },
   setDrawer(state){
     state.drawer = !state.drawer
   },
   setLoadedDished (state, payload) {
-    loadedDishes = payload
+    state.loadedDishes = payload
   }
   },
   actions: {
@@ -64,13 +64,14 @@ export default new Vuex.Store({
       commit('clearError')
       firebase.auth().signInWithEmailAndPassword(payload.email,payload.password).then(user=>{
         console.log('USER INFO ',user)
-        commit('setLoading',false)
+        
         const newUser = {
           id : user.uid,
           email:user.email,
           isLogged : true
         }
         commit('setUser',newUser)
+        commit('setLoading',false)
       }).catch(error =>{
         commit('setLoading',false)
         commit('setError',error)

@@ -53,16 +53,16 @@
     </v-navigation-drawer>
 
     <v-toolbar color="red darken-1"  class="white--text">
-      <v-toolbar-side-icon  @click="drawer = !drawer"  class="white--text"></v-toolbar-side-icon>
+      <v-toolbar-side-icon  @click="drawer = !drawer"  class="white--text" v-if="this.userIsAuthenticated"></v-toolbar-side-icon>
       <v-toolbar-title>X-Mas Party</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer></v-spacer> 
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat class="white--text">Link One</v-btn>
-      <v-btn flat class="white--text">Link Two</v-btn>
-      <v-btn flat class="white--text">Link Three</v-btn>
+      <v-btn flat class="white--text">Repas</v-btn>
+      <v-btn flat class="white--text">Jeux de société</v-btn>
+      <v-btn flat class="white--text" to="/secret-santa">Secret Santa</v-btn>
       <v-btn flat class="yellow--text"  v-if="this.userIsAuthenticated" @click="signOut()">
           <v-icon left dark>exit_to_app</v-icon>
-          Sign out
+          Déconnexion
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
