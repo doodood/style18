@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+
 import AuthGuard from './auth-guard'
 Vue.use(Router)
 
@@ -31,6 +32,21 @@ export default new Router({
       path: '/sign-up',
       name: 'Signup',
       component: () => import(/* webpackChunkName: "about" */ './views/Signup.vue')
+    },
+    {
+      path: '/repas',
+      name: 'Dish',
+      component: () => import(/* webpackChunkName: "about" */ './views/Dish.vue')
+    },
+    {
+      path: '/secret-santa',
+      name: 'SecretSanta',
+      component: () => import(/* webpackChunkName: "about" */ './views/SecretSanta.vue')
+    },
+    {
+      path: '/jeux-de-societe',
+      name: 'Games',
+      component: () => import(/* webpackChunkName: "about" */ './views/Games.vue')
     }
   ]
 })

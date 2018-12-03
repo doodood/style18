@@ -57,8 +57,8 @@
       <v-toolbar-title>X-Mas Party</v-toolbar-title>
       <v-spacer></v-spacer> 
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat class="white--text">Repas</v-btn>
-      <v-btn flat class="white--text">Jeux de société</v-btn>
+      <v-btn flat class="white--text" to="/repas">Repas</v-btn>
+      <v-btn flat class="white--text" to="/jeux-de-societe">Jeux de société</v-btn>
       <v-btn flat class="white--text" to="/secret-santa">Secret Santa</v-btn>
       <v-btn flat class="yellow--text"  v-if="this.userIsAuthenticated" @click="signOut()">
           <v-icon left dark>exit_to_app</v-icon>
@@ -88,7 +88,7 @@ export default {
         items: [
           { icon: 'apps', title: 'Accueil', to: '/' },
           { icon: 'restaurant_menu', title: 'Repas', to: '/repas' },
-          { icon: 'games', title: 'Jeux de société', to: '/jeux-de-scoiete' },
+          { icon: 'games', title: 'Jeux de société', to: '/jeux-de-societe' },
           { icon: 'card_giftcard', title: 'Secret Santa', to: '/secret-santa' },
         ],
         miniVariant: false,
