@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-
+import AuthGuard from './auth-guard'
 Vue.use(Router)
 
 export default new Router({
@@ -11,7 +11,8 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      beforeEnter : AuthGuard
     },
     {
       path: '/about',

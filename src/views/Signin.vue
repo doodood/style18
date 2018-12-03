@@ -8,6 +8,10 @@
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
+          <v-img
+          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+          aspect-ratio="2.75"
+        ></v-img>
           <v-card-text>
             <v-container>
               <form @submit.prevent="onSignin">
@@ -35,8 +39,8 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12>
-                    <v-btn type="submit" :disabled="loading"  color="primary" :loading="loading">
-                      Sign in
+                    <v-btn type="submit" :disabled="loading"  color="amber darken-1" :loading="loading">
+                      Connexion
                        <span slot="loader" class="custom-loader">
                         <v-icon light>cached</v-icon>
                        </span>
@@ -46,6 +50,10 @@
               </form>
             </v-container>
           </v-card-text>
+          <v-img
+          src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
+          aspect-ratio="2.75"
+        ></v-img>
         </v-card>
       </v-flex>
     </v-layout>

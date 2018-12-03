@@ -9,7 +9,7 @@ export default new Vuex.Store({
     user:null,
     loading: false,
     error: null,
-    loadedDishes = []
+    loadedDishes : []
   },
   getters: {
     user: state => state.user,
