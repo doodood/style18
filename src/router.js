@@ -36,7 +36,12 @@ export default new Router({
     {
       path: '/repas',
       name: 'Dish',
-      component: () => import(/* webpackChunkName: "about" */ './views/Dish.vue')
+      component: () => import(/* webpackChunkName: "about" */ './components/Dish/Dish.vue')
+    },
+    {
+      path: '/repas/nouveau',
+      name: 'Dish',
+      component: () => import(/* webpackChunkName: "about" */ './components/Dish/AddDish.vue')
     },
     {
       path: '/secret-santa',

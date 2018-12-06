@@ -35,6 +35,9 @@ export default new Vuex.Store({
   },
   setLoadedDished (state, payload) {
     state.loadedDishes = payload
+  },
+  createDish (state, payload) {
+    state.loadedDishes.push(payload)
   }
   },
   actions: {
@@ -115,9 +118,9 @@ export default new Vuex.Store({
     createDish ({commit}, payload){
       const dish = {
         title : payload.title,
-        imageUrl : payload.imageUrl,
+        imageUrl : payload.image,
         description : payload.description,
-        author : payload.author
+        author : payload.by
       }
       firebase.database().ref('dishes').push(dish).then(
         (data) => {
