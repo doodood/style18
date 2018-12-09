@@ -40,7 +40,7 @@ export default new Router({
     },
     {
       path: '/repas/nouveau',
-      name: 'Dish',
+      name: 'New Dish',
       component: () => import(/* webpackChunkName: "about" */ './components/Dish/AddDish.vue')
     },
     {

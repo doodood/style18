@@ -1,6 +1,9 @@
 <template>
     <div id="addDish">
         <v-container>
+             <v-btn flat round to="/repas" left>
+                Retour
+            </v-btn>
             <v-layout>
                 <v-flex xs12 sm6 offset-sm3>
                     <h4 class="primary--text">Plat apporté</h4>
@@ -19,12 +22,18 @@
                         required
                         v-model="origine"
                         ></v-text-field>
-                        <v-text-field
-                        label="Image"
-                        required
-                        v-model="image"
-                        ></v-text-field>
-                        <v-img :src="image" height="200px"></v-img>
+                        <v-btn raised 
+                                @click="pickImage">
+                            Ajouter une image
+                        </v-btn>
+                        <input type="file" 
+                                style="display: none" 
+                                ref="fileInput" 
+                                accept="image/*"
+                                @change="onFilePicked">
+                        <v-img v-if="imageUrl !== null" 
+                                :src="imageUrl" 
+                                height="200px"></v-img>
                         <v-textarea
                         label="Description"
                         required
@@ -59,7 +68,25 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                 origine : '',
                 description : '',
                 by : '',
-                image : ''
+                imageUrl : '',
+                image: null,
+                items: [
+                            {
+                            text: 'Accueil',
+                            disabled: false,
+                            href: '/'
+                            },
+                            {
+                            text: 'Plats',
+                            disabled: false,
+                            href: '/repas'
+                            },
+                            {
+                            text: 'Ajouter plat',
+                            disabled: true,
+                            href: 'repas/nouveau'
+                            }
+                        ]
             }
         },
         computed : {
@@ -72,13 +99,42 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
         methods : {
             onCreateDish() {
                 const dish = {
-                    plat : this.plat,
+                    title : this.plat,
                     origine : this.origine,
                     description : this.description,
                     by : this.by,
                     image : this.image
+
                 }
-                this.$store.dispatch('createDish',dish)
+                console.log(dish)
+                return this.$swal({
+                       type: 'success',
+                       title: 'Yummy',
+                       text: 'Cool, on va bien manger'
+                   }).then( () => {
+                       this.$store.dispatch('createDish',dish).then(this.$router.back())
+                   })
+                
+            },
+            pickImage() {
+                this.$refs.fileInput.click()
+            },
+            onFilePicked(event) {
+                const files = event.target.files
+                let filename = files[0].name
+                if (filename.lastIndexOf('.') <= 0) {
+                   return this.$swal({
+                       type: 'error',
+                       title: 'Ooops...',
+                       text: 'Tchiip ajoute une vraie image toi aussi !!!!'
+                   });
+                }
+                const fileReader = new FileReader()
+                fileReader.addEventListener('load', () => {
+                    this.imageUrl = fileReader.result
+                })
+                fileReader.readAsDataURL(files[0])
+                this.image =files[0].name
             }
         }
     }

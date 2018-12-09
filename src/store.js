@@ -15,7 +15,8 @@ export default new Vuex.Store({
     user: state => state.user,
     loading: state => state.loading,
     error: state => state.error,
-    drawer: state => state.drawer
+    drawer: state => state.drawer,
+    loadDishes: state => state.loadedDishes
   },
   mutations: {
     setUser (state, payload) {
@@ -96,7 +97,7 @@ export default new Vuex.Store({
       commit('setDrawer')
     },
     loadDishes ({commit}) {
-      firebase.database().ref().once('value')
+      firebase.database().ref('dishes').once('value')
       .then((data) => {
         const dishes = []
         const obj = data.val()
@@ -109,7 +110,7 @@ export default new Vuex.Store({
             author : obj[key].author
           })
         }
-        commit ('set')
+        commit ('setLoadedDished',dishes)
       })
       .catch( (err) => {
         console.log(err)
@@ -118,20 +119,39 @@ export default new Vuex.Store({
     createDish ({commit}, payload){
       const dish = {
         title : payload.title,
-        imageUrl : payload.image,
         description : payload.description,
         author : payload.by
       }
+      let key
+      let imageUrl
       firebase.database().ref('dishes').push(dish).then(
         (data) => {
-          console.log(data)
-          const key = data.key
-          commit('createDIsh',
+           key = data.key
+          return key
+        })
+        .then(key => {
+          const filename = payload.image.name
+          const ext = filename.slice(filename.lastIndexOf('.'))
+          return firebase.storage().ref('dishes/' + key+ext).put(payload.image)
+        }
+      )
+      .then(fileData => {
+        let imagePath = fileData.metadata.fullPath
+        return firebase.storage().ref().child(imagePath).getDownloadURL()
+          .then(url => {
+            imageUrl = url
+            console.log('File available at', url)
+            return firebase.database().ref('dishes').child(key).update({imageUrl: imageUrl})
+          })
+      })﻿
+      .then( () => {
+        commit('createDish',
           {
             ...dish,
+            imageUrl: imageUrl,
             id : key})
-        }
-      ).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err)
       })
       

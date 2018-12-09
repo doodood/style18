@@ -6,6 +6,8 @@ import './registerServiceWorker'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' 
 import firebase from './firebase'
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
 Vue.use(Vuetify)
 Vue.config.productionTip = false
 
