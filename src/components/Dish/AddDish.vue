@@ -30,7 +30,7 @@
                                 style="display: none" 
                                 ref="fileInput" 
                                 accept="image/*"
-                                @change="onFilePicked">
+                                @change="onFilePicked($event.target.files)">
                         <v-img v-if="imageUrl !== null" 
                                 :src="imageUrl" 
                                 height="200px"></v-img>
@@ -70,6 +70,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                 by : '',
                 imageUrl : '',
                 image: null,
+                img:null,
                 items: [
                             {
                             text: 'Accueil',
@@ -107,20 +108,28 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 
                 }
                 console.log(dish)
+                this.$store.dispatch('createDish',dish)
                 return this.$swal({
                        type: 'success',
                        title: 'Yummy',
                        text: 'Cool, on va bien manger'
                    }).then( () => {
-                       this.$store.dispatch('createDish',dish).then(this.$router.back())
+                       this.$router.back()
                    })
                 
             },
             pickImage() {
                 this.$refs.fileInput.click()
             },
-            onFilePicked(event) {
-                const files = event.target.files
+            onFilePicked(files) {
+                this.image = files[0]
+                const fileReader = new FileReader()
+                fileReader.addEventListener('load',(e) => {
+                    this.img = e.target.result
+                    this.imageUrl = this.img
+                })
+                fileReader.readAsDataURL(this.image);
+                /* const files = event.target.files
                 let filename = files[0].name
                 if (filename.lastIndexOf('.') <= 0) {
                    return this.$swal({
@@ -134,7 +143,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                     this.imageUrl = fileReader.result
                 })
                 fileReader.readAsDataURL(files[0])
-                this.image =files[0].name
+                this.image =files[0].name */
             }
         }
     }

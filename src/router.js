@@ -51,7 +51,8 @@ export default new Router({
     {
       path: '/jeux-de-societe',
       name: 'Games',
-      component: () => import(/* webpackChunkName: "about" */ './views/Games.vue')
+      beforeEnter : AuthGuard,
+      component: () => import(/* webpackChunkName: "about" */ './components/Game/Game.vue')
     }
   ]
 })

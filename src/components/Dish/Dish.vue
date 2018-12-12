@@ -31,8 +31,8 @@
                                 <v-card-title>
                                     <div>
                                         <h1>{{d.title}}</h1>
-                                        <div>{{d.description}}</div>
-                                        <p>{{d.author}}</p>
+                                        <div>Description: {{d.description}}</div>
+                                        <p>Cuisiné par: {{d.author}}</p>
                                     </div>
                                 </v-card-title>
                             </v-flex>

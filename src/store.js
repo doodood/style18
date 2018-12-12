@@ -136,14 +136,13 @@ export default new Vuex.Store({
         }
       )
       .then(fileData => {
-        let imagePath = fileData.metadata.fullPath
-        return firebase.storage().ref().child(imagePath).getDownloadURL()
-          .then(url => {
-            imageUrl = url
-            console.log('File available at', url)
-            return firebase.database().ref('dishes').child(key).update({imageUrl: imageUrl})
-          })
-      })﻿
+          let imagePath = fileData.metadata.fullPath
+          return firebase.storage().ref().child(imagePath).getDownloadURL()
+            .then(url => {
+              imageUrl = url
+              return firebase.database().ref('dishes/').child(key).update({imageUrl: imageUrl})
+            })
+        })﻿
       .then( () => {
         commit('createDish',
           {
