@@ -9,14 +9,16 @@ export default new Vuex.Store({
     user:null,
     loading: false,
     error: null,
-    loadedDishes : []
+    loadedDishes : [],
+    loadedGames : []
   },
   getters: {
     user: state => state.user,
     loading: state => state.loading,
     error: state => state.error,
     drawer: state => state.drawer,
-    loadDishes: state => state.loadedDishes
+    loadDishes: state => state.loadedDishes,
+    loadedGames: state => state.loadedGames
   },
   mutations: {
     setUser (state, payload) {
@@ -37,8 +39,14 @@ export default new Vuex.Store({
   setLoadedDished (state, payload) {
     state.loadedDishes = payload
   },
+  setLoadedGames(state, payload) {
+     state.loadedGames = payload
+  },
   createDish (state, payload) {
     state.loadedDishes.push(payload)
+  },
+  addGame(state, payload) {
+    state.loadedGames.push(payload)
   }
   },
   actions: {
@@ -115,6 +123,22 @@ export default new Vuex.Store({
       .catch( (err) => {
         console.log(err)
       })
+    },
+    loadGames({commit}) {
+      firebase.database().ref('games').once('value')
+      .then(data => {
+        const games = []
+        const obj = data.val()
+        for (let key in obj) {
+          games.push({
+            id:key,
+            name:obj[key].name,
+            owner: obj[key].owner,
+            image: obj[key].image
+          })
+        }
+        commit ('setLoadedGames',games)
+      })
     }, 
     createDish ({commit}, payload){
       const dish = {
@@ -142,7 +166,7 @@ export default new Vuex.Store({
               imageUrl = url
               return firebase.database().ref('dishes/').child(key).update({imageUrl: imageUrl})
             })
-        })﻿
+        })
       .then( () => {
         commit('createDish',
           {
@@ -154,6 +178,43 @@ export default new Vuex.Store({
         console.log(err)
       })
       
+    },
+    addGame ({commit}, payload) {
+      const game = {
+        name: payload.name,
+        owner: payload.owner,
+        duration: payload.duration
+      }
+      let key
+      let imageUrl
+      firebase.database().ref('games').push(game)
+      .then( data => {
+        key = data.key
+        return key
+      })
+      .then(key => {
+          const filename = payload.image.name
+          const ext = filename.slice(filename.lastIndexOf('.'))
+          return firebase.storage().ref('games/' + key+ext).put(payload.image)
+      })
+      .then(fileData => {
+        let imagePath = fileData.metadata.fullPath
+        return firebase.storage().ref().child(imagePath).getDownloadURL()
+          .then(url => {
+            imageUrl = url
+            return firebase.database().ref('games/').child(key).update({imageUrl: imageUrl})
+          })
+      })
+      .then( () => {
+        commit('addGame',
+          {
+            ...game,
+            imageUrl: imageUrl,
+            id : key})
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   }
 })

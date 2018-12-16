@@ -32,67 +32,151 @@
            Ajouter
           <v-icon dark right>add</v-icon>
       </v-btn>
-      <v-card>
-        <v-card-title>
-          <span class="headline">User Profile</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Email*" required></v-text-field>
-              </v-flex>
-              <v-flex xs12>
-                <v-text-field label="Password*" type="password" required></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-flex>
-            </v-layout>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="dialog = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
+      <v-form @submit.prevent="onAddGame">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Proposition de jeu ?</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm6 md12>
+                  <v-text-field label="Nom du jeu*" 
+                                required
+                                v-model="name"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md12>
+                  <v-btn raised block
+                        color="red"
+                        class="white--text"
+                        @click="pickImage">
+                              Ajouter une image
+                  </v-btn>
+                  <input type="file" 
+                          style="display: none" 
+                          ref="fileInput" 
+                          accept="image/*"
+                          @change="onFilePicked($event.target.files)">
+                  <v-img v-if="imageUrl !== null" 
+                          :src="imageUrl" 
+                          height="200px"></v-img>
+                </v-flex>
+                <v-flex xs12 sm6 md12>
+                  <v-text-field label="Qui Ramène le jeu ?*"
+                                v-model="owner"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm12>
+                  <v-select
+                    :items="['Rapide', 'Bof', 'Peut vite devenir chiante...', 'Ne termine jamais','Normale']"
+                    label="Logueur des parties*"
+                    required
+                    v-model="duration"
+                  ></v-select>
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <small>*Champ obligatoire</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="red darken-1" flat @click="dialog = false">Fermer</v-btn>
+            <v-btn color="red darken-1" 
+                  flat 
+                  @click="dialog = false"
+                  :disabled="!formValid"
+                  type="submit">Ajouter</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
+    </section>
+    <section>
+      <v-flex xs12 sm3 v-for="g in loadedGames" 
+                        :key="g.name" 
+                        class="mb-4  mt-2 text-center" 
+                        color="red darken-2">
+        <v-card>
+          <v-img v-if="g.imageUrl" 
+              :src="g.imageUrl"
+               aspect-ratio="2.75">
+          </v-img>
+          <v-img v-else
+          src="https://www.lifewire.com/thmb/NYLbQgioGo9K2lPekR8vemLzPZw=/1600x1200/filters:no_upscale()/holiday-lights-christmas-wallpaper-5a2821685b6e24001a62aaec.jpg"
+          aspect-ratio="2.75"
+          >
+          </v-img>
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline mb-0">{{g.name}}</h3>
+              <div>Qui ramène: {{g.owner}}</div>
+              <div>Durée d'une partie : {{g.duration}}</div>
+            </div>
+          </v-card-title>
+          <!-- <v-card-actions>
+            <v-btn flat color="orange">Share</v-btn>
+            <v-btn flat color="orange">Explore</v-btn>
+          </v-card-actions> -->
+        </v-card>
+      </v-flex>
     </section>
     </div>
 </template>
 <script>
+import { mapGetters, mapActions, mapMutations } from 'vuex'
     export default {
         data () {
             return {
-                dialog: false
+                dialog: false,
+                imageUrl: null,
+                owner: '',
+                duration: '',
+                name: '',
+                image: null,
+                img:null,
+
             }
+        },
+        computed : {
+          formValid () {
+                return this.owner !== '' &&
+                       this.longeur !== '' &&
+                       this.name !== ''
+            },
+            ...mapGetters([
+            'loadedGames'
+            ])
+        },
+        methods : {
+          pickImage() {
+                this.$refs.fileInput.click()
+            },
+            onFilePicked(files) {
+                this.image = files[0]
+                const fileReader = new FileReader()
+                fileReader.addEventListener('load',(e) => {
+                    this.img = e.target.result
+                    this.imageUrl = this.img
+                })
+                fileReader.readAsDataURL(this.image);
+            },
+            onAddGame() {
+                const game = {
+                    owner : this.owner,
+                    duration : this.duration,
+                    name : this.name,
+                    image : this.image
+                }
+                console.log(game)
+                this.$store.dispatch('addGame',game)
+                return this.$swal({
+                       type: 'success',
+                       title: 'Merci',
+                       text: 'Let the massacre begin'
+                   }).then( () => {
+                       this.dialog = false
+                   })
+            }
+            
         }
     }
 </script>

@@ -1,18 +1,28 @@
 <template>
 
     <v-container>
-        <v-btn flat round to="/" left>
+        <v-btn flat 
+                round 
+                to="/" 
+                left>
             Retour
         </v-btn>
         <br>
-        <v-btn  raised  round color="amber darken-4 white--text text-darken-4" right  to="/repas/nouveau">
+        <v-btn  raised  
+                round 
+                color="amber darken-4 white--text text-darken-4" 
+                right  
+                to="/repas/nouveau">
             <v-icon color="white lighten-2">add</v-icon>
             Ajouter un plat
             <v-icon color="white lighten-2">add</v-icon>
         </v-btn>
         <v-layout row wrap>
             <v-flex xs12 md8 sm10 offset-md2 offset-sm1>
-                <v-card v-for="d in loadDishes" :key="d.title" class="mb-4 white--text" color="red darken-2">
+                <v-card v-for="d in loadDishes" 
+                        :key="d.title" 
+                        class="mb-4 white--text" 
+                        color="red darken-2">
                     <v-container fluid>
                         <v-layout row>
                             <v-flex xs6 sm6 md6>
@@ -30,7 +40,7 @@
                             <v-flex>
                                 <v-card-title>
                                     <div>
-                                        <h1>{{d.title}}</h1>
+                                        <span class="headline">{{d.title}}</span>
                                         <div>Description: {{d.description}}</div>
                                         <p>Cuisiné par: {{d.author}}</p>
                                     </div>

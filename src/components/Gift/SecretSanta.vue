@@ -9,7 +9,14 @@
           >
             
             <h1 class="white--text mb-2 display-1 text-xs-center amber--text"></h1>
-            <div class="subheading mb-3 text-xs-center amber--text" ></div>           
+            <div class="subheading mb-3 text-xs-center amber--text" ></div>
+            <v-btn
+              class="red lighten-2 mt-5"
+              dark
+              large
+              
+            >             
+            </v-btn>
             <span class="subheading">
                 Balancez vos idées ici !!!
               </span>
