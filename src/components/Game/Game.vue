@@ -93,7 +93,7 @@
     <section>
       <v-flex xs12 sm3 v-for="g in loadedGames" 
                         :key="g.name" 
-                        class="mb-4  mt-2 text-center" 
+                        class="mb-4  mt-2 text-center mx-auto" 
                         color="red darken-2">
         <v-card>
           <v-img v-if="g.imageUrl" 

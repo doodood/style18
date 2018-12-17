@@ -126,7 +126,7 @@ export default new Vuex.Store({
     },
     loadGames({commit}) {
       firebase.database().ref('games').once('value')
-      .then(data => {
+      .then((data) => {
         const games = []
         const obj = data.val()
         for (let key in obj) {
