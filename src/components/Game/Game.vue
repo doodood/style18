@@ -91,14 +91,11 @@
     </v-dialog>
     </section>
     <section>
-<<<<<<< HEAD
       <v-flex xs12 sm3 v-for="g in loadedGames" 
                         :key="g.name" 
                         class="mb-4  mt-2 text-center mx-auto" 
                         color="red darken-2">
-=======
       <v-flex v-for="g in loadGames" :key="g.name" xs12 sm6 md4 >
->>>>>>> 91e69cfe71a4df4308c6aec37834bfb429c62dd1
         <v-card>
           <v-img v-if="g.imageUrl" 
             :src="g.imageUrl"
