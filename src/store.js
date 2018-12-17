@@ -135,12 +135,10 @@ export default new Vuex.Store({
     loadGames({commit}) {
       firebase.database().ref('games').once('value')
       .then((data) => {
-
-        console.log('dood', data.val())
         const games = []
         const obj = data.val()
         for (let key in obj) {
-          dishes.push({
+          games.push({
             id : key,
             name : obj[key].name,
             imageUrl : obj[key].imageUrl,

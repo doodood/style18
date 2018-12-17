@@ -23,6 +23,8 @@ new Vue({
       }
     })
     this.$store.dispatch('loadDishes')
+    this.$store.dispatch('loadGames')
+    this.$store.dispatch('loadIdeas')
   }
 }).$mount('#app')
 

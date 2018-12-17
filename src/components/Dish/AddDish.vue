@@ -107,7 +107,6 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                     image : this.image
 
                 }
-                console.log(dish)
                 this.$store.dispatch('createDish',dish)
                 return this.$swal({
                        type: 'success',
@@ -116,7 +115,6 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                    }).then( () => {
                        this.$router.back()
                    })
-                
             },
             pickImage() {
                 this.$refs.fileInput.click()
@@ -129,21 +127,6 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                     this.imageUrl = this.img
                 })
                 fileReader.readAsDataURL(this.image);
-                /* const files = event.target.files
-                let filename = files[0].name
-                if (filename.lastIndexOf('.') <= 0) {
-                   return this.$swal({
-                       type: 'error',
-                       title: 'Ooops...',
-                       text: 'Tchiip ajoute une vraie image toi aussi !!!!'
-                   });
-                }
-                const fileReader = new FileReader()
-                fileReader.addEventListener('load', () => {
-                    this.imageUrl = fileReader.result
-                })
-                fileReader.readAsDataURL(files[0])
-                this.image =files[0].name */
             }
         }
     }

@@ -17,7 +17,7 @@
         </v-parallax>
         <section>
           <v-layout>
-            <v-flex xs6 offset-xs1 sm6 md10 offset-md1>
+            <v-flex xs10 offset-xs1 offset-sm1  sm10 md10 offset-md1>
               <div>
                 <v-form @submit.prevent="onCreateIdea">
                   <v-text-field label="Idée cadeau*"
@@ -44,6 +44,8 @@
                 <v-data-table
                 :items="loadIdeas"
                 class="elevation-1"
+                hide-actions
+                hide-headers
               >
                 <template slot="items" slot-scope="props">
                   <td class="text-xs-right">{{ props.item.title }}</td>
