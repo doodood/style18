@@ -10,7 +10,8 @@ export default new Vuex.Store({
     loading: false,
     error: null,
     loadedDishes : [],
-    loadedGames : []
+    loadedGames : [],
+    loadedIdeas: []
   },
   getters: {
     user: state => state.user,
@@ -18,7 +19,8 @@ export default new Vuex.Store({
     error: state => state.error,
     drawer: state => state.drawer,
     loadDishes: state => state.loadedDishes,
-    loadedGames: state => state.loadedGames
+    loadGames: state => state.loadedGames,
+    loadIdeas: state => state.loadedIdeas
   },
   mutations: {
     setUser (state, payload) {
@@ -40,13 +42,19 @@ export default new Vuex.Store({
     state.loadedDishes = payload
   },
   setLoadedGames(state, payload) {
-     state.loadedGames = payload
+    state.loadedGames = payload
+  },
+  setLoadedIdeas(state, payload) {
+    state.loadedIdeas = payload
   },
   createDish (state, payload) {
     state.loadedDishes.push(payload)
   },
-  addGame(state, payload) {
+  createGame(state, payload) {
     state.loadedGames.push(payload)
+  },
+  createIdea(state, payload){
+    state.loadedIdeas.push(payload)
   }
   },
   actions: {
@@ -127,19 +135,46 @@ export default new Vuex.Store({
     loadGames({commit}) {
       firebase.database().ref('games').once('value')
       .then((data) => {
+<<<<<<< HEAD
+=======
+        console.log('dood', data.val())
+>>>>>>> 91e69cfe71a4df4308c6aec37834bfb429c62dd1
         const games = []
         const obj = data.val()
         for (let key in obj) {
-          games.push({
-            id:key,
-            name:obj[key].name,
-            owner: obj[key].owner,
-            image: obj[key].image
+          dishes.push({
+            id : key,
+            name : obj[key].name,
+            imageUrl : obj[key].imageUrl,
+            duration : obj[key].duration,
+            owner : obj[key].owner
           })
         }
         commit ('setLoadedGames',games)
       })
-    }, 
+      .catch( (err) => {
+        console.log(err)
+      })
+    },
+    loadIdeas({commit}) {
+      firebase.database().ref('ideas').once('value')
+      .then(data => {
+        const ideas = []
+        const obj = data.val()
+        for(let key in obj) {
+          ideas.push({
+            id: key,
+            title: obj[key].title,
+            link: obj[key].link,
+            price: obj[key].price
+          })
+        }
+        commit('setLoadedIdeas', ideas)
+      })
+      .catch( err => {
+        console.log(err)
+      })
+    },
     createDish ({commit}, payload){
       const dish = {
         title : payload.title,
@@ -150,7 +185,7 @@ export default new Vuex.Store({
       let imageUrl
       firebase.database().ref('dishes').push(dish).then(
         (data) => {
-           key = data.key
+          key = data.key
           return key
         })
         .then(key => {
@@ -179,34 +214,49 @@ export default new Vuex.Store({
       })
       
     },
-    addGame ({commit}, payload) {
+    createIdea({commit}, payload){
+      const idea = {
+        title: payload.title,
+        price: payload.price,
+        link: payload.link
+      }
+      firebase.database().ref('ideas').push(idea)
+      .then( data => {
+        commit('createIdea',idea)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    createGame ({commit}, payload){
       const game = {
-        name: payload.name,
-        owner: payload.owner,
-        duration: payload.duration
+        name : payload.name,
+        duration : payload.duration,
+        owner : payload.owner
       }
       let key
       let imageUrl
-      firebase.database().ref('games').push(game)
-      .then( data => {
-        key = data.key
-        return key
-      })
-      .then(key => {
+      firebase.database().ref('games').push(game).then(
+        (data) => {
+          key = data.key
+          return key
+        })
+        .then(key => {
           const filename = payload.image.name
           const ext = filename.slice(filename.lastIndexOf('.'))
           return firebase.storage().ref('games/' + key+ext).put(payload.image)
-      })
+        }
+      )
       .then(fileData => {
-        let imagePath = fileData.metadata.fullPath
-        return firebase.storage().ref().child(imagePath).getDownloadURL()
-          .then(url => {
-            imageUrl = url
-            return firebase.database().ref('games/').child(key).update({imageUrl: imageUrl})
-          })
-      })
+          let imagePath = fileData.metadata.fullPath
+          return firebase.storage().ref().child(imagePath).getDownloadURL()
+            .then(url => {
+              imageUrl = url
+              return firebase.database().ref('games/').child(key).update({imageUrl: imageUrl})
+            })
+        })
       .then( () => {
-        commit('addGame',
+        commit('createGame',
           {
             ...game,
             imageUrl: imageUrl,
@@ -215,6 +265,7 @@ export default new Vuex.Store({
       .catch((err) => {
         console.log(err)
       })
+      
     }
   }
 })

@@ -91,31 +91,36 @@
     </v-dialog>
     </section>
     <section>
+<<<<<<< HEAD
       <v-flex xs12 sm3 v-for="g in loadedGames" 
                         :key="g.name" 
                         class="mb-4  mt-2 text-center mx-auto" 
                         color="red darken-2">
+=======
+      <v-flex v-for="g in loadGames" :key="g.name" xs12 sm6 md4 >
+>>>>>>> 91e69cfe71a4df4308c6aec37834bfb429c62dd1
         <v-card>
           <v-img v-if="g.imageUrl" 
-              :src="g.imageUrl"
-               aspect-ratio="2.75">
-          </v-img>
+            :src="g.imageUrl"
+            aspect-ratio="2.75"
+          ></v-img>
           <v-img v-else
           src="https://www.lifewire.com/thmb/NYLbQgioGo9K2lPekR8vemLzPZw=/1600x1200/filters:no_upscale()/holiday-lights-christmas-wallpaper-5a2821685b6e24001a62aaec.jpg"
           aspect-ratio="2.75"
           >
           </v-img>
+
           <v-card-title primary-title>
             <div>
               <h3 class="headline mb-0">{{g.name}}</h3>
-              <div>Qui ramène: {{g.owner}}</div>
-              <div>Durée d'une partie : {{g.duration}}</div>
+              <div>Durée : {{g.duration}} </div>
             </div>
           </v-card-title>
-          <!-- <v-card-actions>
-            <v-btn flat color="orange">Share</v-btn>
+
+          <v-card-actions>
+            <v-btn flat color="orange">{{g.owner}}</v-btn>
             <v-btn flat color="orange">Explore</v-btn>
-          </v-card-actions> -->
+          </v-card-actions>
         </v-card>
       </v-flex>
     </section>
@@ -123,6 +128,7 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+
     export default {
         data () {
             return {
@@ -139,16 +145,17 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
         computed : {
           formValid () {
                 return this.owner !== '' &&
-                       this.longeur !== '' &&
-                       this.name !== ''
+                      this.duration !== '' &&
+                      this.name !== ''
             },
             ...mapGetters([
-            'loadedGames'
+            'loadGames'
             ])
         },
         methods : {
           pickImage() {
                 this.$refs.fileInput.click()
+                console.log('TEST STORE', this.$store.getters.loadGames)
             },
             onFilePicked(files) {
                 this.image = files[0]
@@ -166,15 +173,8 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                     name : this.name,
                     image : this.image
                 }
-                console.log(game)
-                this.$store.dispatch('addGame',game)
-                return this.$swal({
-                       type: 'success',
-                       title: 'Merci',
-                       text: 'Let the massacre begin'
-                   }).then( () => {
-                       this.dialog = false
-                   })
+                this.$store.dispatch('createGame',game)
+                
             }
             
         }
