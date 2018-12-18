@@ -40,12 +40,12 @@
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
-                <v-flex xs12 sm6 md12>
+                <v-flex xs12 sm12 md12>
                   <v-text-field label="Nom du jeu*" 
                                 required
                                 v-model="name"></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6 md12>
+                <v-flex xs12 sm12 md12>
                   <v-btn raised block
                         color="red"
                         class="white--text"
@@ -61,7 +61,7 @@
                           :src="imageUrl" 
                           height="200px"></v-img>
                 </v-flex>
-                <v-flex xs12 sm6 md12>
+                <v-flex xs12 sm12 md12>
                   <v-text-field label="Qui Ramène le jeu ?*"
                                 v-model="owner"></v-text-field>
                 </v-flex>
@@ -91,7 +91,8 @@
     </v-dialog>
     </section>
     <section>
-      <v-flex xs12 sm4 v-for="g in loadGames" 
+      <v-layout row wrap>
+      <v-flex xs6 sm3 v-for="g in loadGames" 
                         :key="g.name" 
                         class="mb-4  mt-2 text-center mx-auto" 
                         color="red darken-2">
@@ -108,12 +109,13 @@
           <v-card-title primary-title>
             <div>
               <h3 class="headline mb-0">{{g.name}}</h3>
-              <div>Qui ramène: {{g.owner}}</div>
-              <div>Durée d'une partie : {{g.duration}}</div>
+              <div class="subheading mb-0">Qui ramène: {{g.owner}}</div>
+              <div class="subheading mb-0">Durée d'une partie : {{g.duration}}</div>
             </div>
           </v-card-title>
         </v-card>
       </v-flex>
+      </v-layout>
     </section>
     </div>
 </template>
@@ -164,7 +166,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
                     name : this.name,
                     image : this.image
                 }
-                this.$store.dispatch('addGame',game)
+                this.$store.dispatch('createGame',game)
                 return this.$swal({
                        type: 'success',
                        title: 'Merci',
