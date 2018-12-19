@@ -16,14 +16,6 @@ export default new Router({
       beforeEnter : AuthGuard
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    },
-    {
       path: '/sign-in',
       name: 'Signin',
       component: () => import(/* webpackChunkName: "about" */ './views/Signin.vue')
@@ -36,16 +28,19 @@ export default new Router({
     {
       path: '/repas',
       name: 'Dish',
+      beforeEnter : AuthGuard,
       component: () => import(/* webpackChunkName: "about" */ './components/Dish/Dish.vue')
     },
     {
       path: '/repas/nouveau',
       name: 'New Dish',
+      beforeEnter : AuthGuard,
       component: () => import(/* webpackChunkName: "about" */ './components/Dish/AddDish.vue')
     },
     {
       path: '/secret-santa',
       name: 'SecretSanta',
+      beforeEnter : AuthGuard,
       component: () => import(/* webpackChunkName: "about" */ './views/SecretSanta.vue')
     },
     {

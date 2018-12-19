@@ -91,31 +91,34 @@
     </v-dialog>
     </section>
     <section>
-      <v-layout row wrap>
-      <v-flex xs6 sm3 v-for="g in loadGames" 
-                        :key="g.name" 
-                        class="mb-4  mt-2 text-center mx-auto" 
-                        color="red darken-2">
-        <v-card>
-          <v-img v-if="g.imageUrl" 
-              :src="g.imageUrl"
-               aspect-ratio="2.75">
-          </v-img>
-          <v-img v-else
-          src="https://www.lifewire.com/thmb/NYLbQgioGo9K2lPekR8vemLzPZw=/1600x1200/filters:no_upscale()/holiday-lights-christmas-wallpaper-5a2821685b6e24001a62aaec.jpg"
-          aspect-ratio="2.75"
-          >
-          </v-img>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">{{g.name}}</h3>
-              <div class="subheading mb-0">Qui ramène: {{g.owner}}</div>
-              <div class="subheading mb-0">Durée d'une partie : {{g.duration}}</div>
-            </div>
-          </v-card-title>
-        </v-card>
-      </v-flex>
-      </v-layout>
+      <v-container grid-list-lg fluid>
+        <v-layout row wrap>
+        <v-flex xs6 sm3 v-for="g in loadGames" 
+                          :key="g.name" 
+                          class="mb-4  mt-2 text-center mx-auto" 
+                          color="red darken-2">
+          <v-card raised color="amber darken-2">
+            <v-img v-if="g.imageUrl" 
+                :src="g.imageUrl"
+                aspect-ratio="2.75"
+                >
+            </v-img>
+            <v-img v-else
+            src="https://www.lifewire.com/thmb/NYLbQgioGo9K2lPekR8vemLzPZw=/1600x1200/filters:no_upscale()/holiday-lights-christmas-wallpaper-5a2821685b6e24001a62aaec.jpg"
+            aspect-ratio="2.75"
+            >
+            </v-img>
+            <v-card-title primary-title>
+              <div>
+                <h3 class="headline mb-0">{{g.name}}</h3>
+                <div class="subheading mb-0">Qui ramène: {{g.owner}}</div>
+                <div class="subheading mb-0">Durée d'une partie : {{g.duration}}</div>
+              </div>
+            </v-card-title>
+          </v-card>
+        </v-flex>
+        </v-layout>
+      </v-container>
     </section>
     </div>
 </template>

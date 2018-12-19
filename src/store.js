@@ -76,6 +76,14 @@ export default new Vuex.Store({
       })
   
     },
+    sendPasswordResetEmail ({commit},payload){
+      firebase.auth().sendPasswordResetEmail(payload.email).then(function() {
+        console.log('success')
+      }).catch(function(error) {
+        // An error happened.
+        console.log(error)
+      });
+    },
     autoSignIn ({commit},payload){
       commit('setUser',{id: payload.uid})
     },

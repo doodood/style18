@@ -45,9 +45,13 @@
                         <v-icon light>cached</v-icon>
                        </span>
                     </v-btn>
+                    <br/>
+                    
                   </v-flex>
+                  
                 </v-layout>
               </form>
+              <v-btn flat to="/sign-up">Réinitialise ton mode de passe</v-btn>
             </v-container>
           </v-card-text>
         </v-card>

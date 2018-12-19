@@ -125,7 +125,11 @@ export default {
       'signUserOut'
     ]),
     signOut : function () {
-      this.signUserOut().then(()=>alert('Vous êtes déco'))
+      this.signUserOut().then(()=>this.$swal({
+                       type: 'success',
+                       title: 'Bye',
+                       text: 'See ya'
+                   })).then( () => this.$store.setLoading(false))
     }
   }
 }
